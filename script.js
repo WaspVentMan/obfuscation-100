@@ -44,6 +44,13 @@ let trates = [[2, 1.05], [4, 1.025], [8, 1.01]]
 let numbperc = [0, 0]
 
 let saveData = localStorage.getItem("OBFUSCATION100")
+if (saveData == null){
+    localStorage.setItem("OBFUSCATION100", JSON.stringify({"money": money, "cost": cost, "autobuy": autobuy, "autocost": autocost, "owned": owned, "multi": multi, "last_tick": last_tick, "tokens": tokens, "tcost": tcost, "tautobuy": tautobuy, "tautocost": tautocost, "towned": towned, "tmulti": tmulti, "upgrades": upgrades, "seen": seen}))
+
+    location.reload()
+}
+
+console.log(saveData)
 
 function obfuscate(value){
     numbperc = value.toExponential().split("e+")
@@ -64,11 +71,13 @@ function obfuscate(value){
 }
 
 function purchase(x){
+    console.log(towned)
     if (money >= cost[x]){
         money -= cost[x]; owned[x] += 1; cost[x] *= rates[x][0]; multi[x] *= rates[x][1]
     }
     let numbperc = obfuscate(cost[x])
     document.querySelector('.gen' + (x+1) + 'cost').textContent = numbperc[2]
+    console.log(towned)
 }
 
 function tpurchase(x){
@@ -452,7 +461,7 @@ function setup(){
         }
     ;}
 
-    life = setInterval(gameloop, 0)
+    life = setInterval(gameloop, 1000/60)
 }
 
 setup()
