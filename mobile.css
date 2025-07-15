@@ -2,11 +2,6 @@ body {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     touch-action: manipulation;
     font-display: monospace;
-    margin: auto;
-}
-
-p {
-    margin: auto;
 }
 
 .button {
@@ -17,8 +12,8 @@ p {
     outline-style: solid;
     border-radius: 0px;
     background-color: transparent;
-    width: 115px;
-    height: 75px;
+    width: 75px;
+    height: 115px;
     line-height: 25px;
     font-size: 10px;
     border-style: hidden;
@@ -36,14 +31,22 @@ p {
     outline-style: solid;
     border-radius: 0px;
     background-color: transparent;
-    width: 115px;
-    height: 75px;
+    width: 75px;
+    height: 115px;
     font-size: 10px;
     border-style: hidden;
     touch-action: manipulation;
     outline-color: black;
 
     transition: outline-color 0.25s;
+}
+
+.oneline {
+    margin-top: 32px;
+}
+
+.halfline {
+    margin-top: 20px;
 }
 
 @keyframes ngEntice {
@@ -70,10 +73,10 @@ p {
 
 @keyframes theEnd {
     0% {rotate: 0deg;transform-origin: top left;}
-    25% {rotate: 75deg; transform: translate(0px, 0px); transform-origin: top left;}
-    50% {rotate: 45deg; transform: translate(0px, 0px); transform-origin: top left;}
-    75% {rotate: 55deg; transform: translate(0px, 0px); transform-origin: top left; animation-timing-function: ease-in;}
-    80% {rotate: 55deg; transform: translate(0px, 0px); transform-origin: top left; animation-timing-function: ease-in;}
-    87.5% {rotate: 55deg; transform: translate(60px, 40px); transform-origin: top left; animation-timing-function: ease-in;}
-    100% {rotate: 55deg; transform: translate(60px, 40px); transform-origin: top left; animation-timing-function: ease-in;}
+    25% {rotate: 45deg; transform: translate(0px, 0px); transform-origin: top left;}
+    50% {rotate: 15deg; transform: translate(0px, 0px); transform-origin: top left;}
+    75% {rotate: 35deg; transform: translate(0px, 0px); transform-origin: top left; animation-timing-function: ease-in;}
+    80% {rotate: 35deg; transform: translate(0px, 0px); transform-origin: top left; animation-timing-function: ease-in;}
+    87.5% {rotate: 35deg; transform: translate(40px, 60px); transform-origin: top left; animation-timing-function: ease-in;}
+    100% {rotate: 35deg; transform: translate(40px, 60px); transform-origin: top left; animation-timing-function: ease-in;}
 }
