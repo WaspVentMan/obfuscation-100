@@ -3,7 +3,7 @@ let processing = false
 
 // Set up the options for NGIO.
 var options = {
-    version: "v1.3",
+    version: "v1.3.1",
     preloadScoreBoards: true,
     preloadMedals: true,
     preloadSaveSlots: true

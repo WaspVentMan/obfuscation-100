@@ -164,6 +164,7 @@ function an_ending(button = false){
         document.querySelector('.reset').setAttribute('disabled', true)
 
         localStorage.setItem("OBFUSCATION100", JSON.stringify({"money": 1, "cost": defaultvals[0], "autobuy": defaultvals[2],  "owned": defaultvals[3], "multi": defaultvals[4], "last_tick": last_tick, "tokens": tokens, "tcost": tcost, "tautobuy": tautobuy, "tautocost": tautocost, "towned": towned, "tmulti": tmulti, "upgrades": upgrades, "seen": seen, "start": start}))
+        console.log(JSON.stringify({"money": 1, "cost": defaultvals[0], "autobuy": defaultvals[2],  "owned": defaultvals[3], "multi": defaultvals[4], "last_tick": last_tick, "tokens": tokens, "tcost": tcost, "tautobuy": tautobuy, "tautocost": tautocost, "towned": towned, "tmulti": tmulti, "upgrades": upgrades, "seen": seen, "start": start}))
         setup()
     }
 }
@@ -232,6 +233,8 @@ function setup(){
     document.querySelector('.auto1cost').textContent = "5"
     document.querySelector('.auto2cost').textContent = "15"
     document.querySelector('.auto3cost').textContent = "30"
+
+    saveData = localStorage.getItem("OBFUSCATION100")
 
     try {
         if (saveData != null){
@@ -391,9 +394,12 @@ function gameloop(){
         unlockMedal(80070)
         an_ending()
 
-        if (!offline && tokens + upgrades.reduce((a, b) => a + b, 0) == 0){
-            NGIO.postScore(15104, Date.now() - start, function(){})
-        }
+        try {
+            if (!offline && tokens + upgrades.reduce((a, b) => a + b, 0) == 0){
+                NGIO.postScore(15104, (Date.now() - start), function(){})
+            }
+        } catch {}
+        
     }
 
     if (upgrades[8]){
