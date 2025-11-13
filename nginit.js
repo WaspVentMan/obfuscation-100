@@ -3,7 +3,7 @@ let processing = false
 
 // Set up the options for NGIO.
 var options = {
-    version: "v1.3.1",
+    version: "v1.3.2",
     preloadScoreBoards: true,
     preloadMedals: true,
     preloadSaveSlots: true
@@ -12,16 +12,13 @@ var options = {
 NGIO.init("58822:jxoMWsX2", "K/BlVfb7TcFK6mhoRfl+/w==", options);
 
 let ngLoop = setInterval(function(){
-    document.querySelector(".con").innerHTML = ["ONLINE", "OFFLINE"][offline+0]
     NGIO.getConnectionStatus(function(status) {
         
         // You could hide any login/preload UI elements here (we'll show what we need later).
 
         // This is a generic check to see if we're waiting for something...
         if (NGIO.isWaitingStatus) {
-            let genericWait = "WAITING FOR<br><img src=\"img/newgroundstitle.png\" style=\"width: 256px\">"
-            document.querySelector(".NewgroundsIO").innerHTML = genericWait
-
+            document.querySelector(".NewgroundsIO").innerHTML = "<h1>Connecting to NEWGROUNDS</h1><div class=\"ngButton\" onclick=\"document.querySelector(\'.NewgroundsIO\').style.display = \'none\'\"><h1>Just get this off my screen</h1></div>"
             // We're either waiting for the server to respond, or the user to sign in on Newgrounds.
             // Show a "please wait" message and/or a spinner so the player knows something is happening
         }
@@ -31,22 +28,17 @@ let ngLoop = setInterval(function(){
 
             // we have version and license info
             case NGIO.STATUS_LOCAL_VERSION_CHECKED:
-
-                if (NGIO.isDeprecated) {
-                    document.querySelector(".ver").innerHTML = options.version + " (outdated)"
-                } else {
-                    document.querySelector(".ver").innerHTML = options.version
-                }
+                document.querySelector(".ver").innerHTML = options.version
 
                 if (!NGIO.legalHost) {
-                    document.body.innerHTML = "<h1>THIS GAME IS BEING HOSTED ILLEGALLY, GO TO <a href=\"https://waspventman.co.uk\">WASPVENTMAN.CO.UK</a> OR <a href=\"https://waspventman.newgrounds.com/\">WASPVENTMAN.NEWGROUNDS.COM</a></h1>"
+                    document.body.innerHTML = "<h1>THIS GAME IS BEING HOSTED ILLEGALLY, GO TO <a href=\"https://waspventman.co.uk\">WASPVENTMAN.CO.UK</a></h1>"
                 }
 
                 break
 
             // user needs to log in
             case NGIO.STATUS_LOGIN_REQUIRED:
-                document.querySelector(".NewgroundsIO").innerHTML = "<p onclick=\"NGIO.openLoginPage()\" style=\"height: max-content\">PLEASE LOG INTO<br><img src='img/newgroundstitle.png' style='width: 256px'></p><div onclick=\"NGIO.skipLogin(); offline = true\"><p>No thanks</p><p>(No Medals)</p></div>"
+                document.querySelector(".NewgroundsIO").innerHTML = "<h2>Log into to NEWGROUNDS to earn achievements!</h2><div class=\"ngButton\" onclick=\"NGIO.openLoginPage()\"><h1>Yes, please!</h1></div><div class=\"ngButton\" onclick=\"NGIO.skipLogin()\"><h1>No, thanks!</h1></div>"
 
                 // Show a "Log In" button that calls NGIO.openLoginPage();
                 // Show a "No Thanks" button that calls NGIO.skipLogin();
@@ -55,7 +47,7 @@ let ngLoop = setInterval(function(){
 
             // We are waiting for the user to log in (they should have a login page in a new browser tab)
             case NGIO.STATUS_WAITING_FOR_USER:
-                document.querySelector(".NewgroundsIO").innerHTML = "<p onclick=\"NGIO.cancelLogin(); offline = true\">CONNECTING TO<br><img src='img/newgroundstitle.png' style='width: 256px'><br>Click to cancel and play logged out</p>"
+                document.querySelector(".NewgroundsIO").innerHTML = "<h1>Connecting to NEWGROUNDS</h1><br><div class=\"ngButton\" onclick=\"NGIO.cancelLogin()\"><h1>Wait, no!</h1></div>"
 
                 // Show a "Cancel Login" button that calls NGIO.cancelLogin();
                 
@@ -64,14 +56,13 @@ let ngLoop = setInterval(function(){
             // user needs to log in
             case NGIO.STATUS_READY:
                 document.querySelector(".NewgroundsIO").style.display = "none"
-
-                // If NGIO.hasUser is false, the user opted not to sign in, so you may
-                // need to do some special handling in your game.
-
-                if (NGIO.hasUser){
+                if (NGIO.user != null){
                     offline = false
                 }
 
+                // If NGIO.hasUser is false, the user opted not to sign in, so you may
+                // need to do some special handling in your game.
+                
                 break
         }
 
@@ -79,27 +70,11 @@ let ngLoop = setInterval(function(){
 }, 100)
 
 function unlockMedal(medal, condition = true){
-    if (!offline && !processing){
+    if (!offline){
         if (!NGIO.getMedal(medal).unlocked && condition){
-            processing = true
-            NGIO.unlockMedal(medal, onMedalUnlocked)
+            NGIO.unlockMedal(medal, ()=>{})
         }
     }
-}
-
-function onMedalUnlocked(medal)
-{
-    console.log(`Granted medal: "${medal.name}"`)
-    processing = false
-    //document.querySelector(".achievement").innerHTML += `<div style="display: flex; background-color: black; height: 100px; color: white;" onclick="this.remove()"><div style="text-align: right; margin-right: 8px; margin-left: auto;"><p style="text-align: right; text-overflow: ellipsis; overflow: hidden;">${medal.name}</p><p style="text-align: right; text-overflow: ellipsis; overflow: hidden;">${medal.description}</p><p style="text-align: right; text-overflow: ellipsis; overflow: hidden;">+${medal.value} Points</p></div><img src="https:${medal.icon}.png"></div>`
-    /**
-     * Show a medal popup.  You can get medal information like so:
-     *   medal.id
-     *   medal.name
-     *   medal.description
-     *   medal.value
-     *   medal.icon  (note, these are usually .webp files, and may not work in all frameworks)
-     */
 }
 
 //NGIO.UnlockMedal(medal_id, onMedalUnlocked);
